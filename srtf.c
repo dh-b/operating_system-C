@@ -1,0 +1,101 @@
+#include<stdio.h>
+void insertsort(int arr[], int n,int p[], int burst[]) 
+{ 
+    int i, key,key1,key2, j; 
+    for (i = 1; i < n; i++) { 
+        key = arr[i]; 
+        key1=p[i];
+        key2=burst[i];
+        j = i - 1; 
+  
+        while (j >= 0 && burst[j] > key2) { 
+            arr[j + 1] = arr[j]; 
+            p[j + 1] = p[j]; 
+            burst[j + 1] = burst[j]; 
+            j = j - 1; 
+        } 
+        arr[j + 1] = key;
+        p[j + 1] = key1;
+        burst[j + 1] = key2; 
+    }
+    
+ }  
+ 
+ void print(int arr[], int n) 
+{ 
+    int i; 
+    for (i = 0; i < n; i++) 
+        printf("%d ", arr[i]); 
+    printf("\n"); 
+
+}
+
+void completion(int arr[],int burst[],int n,int p[],int temp[])
+{
+	int comp[n],i=0, j,total=0,x=0,count=0,min=0;
+	for(i=0;i<n;i++)
+		comp[i]=0;
+	
+	while(x<n)
+	{
+		insertsort(arr,n,p,burst);
+		//print(burst,n);
+		//print(p,n);
+		
+		if(count<n)
+		{	
+			if(arr[x]<=total && burst[x]>0)
+			{
+				total+=1;
+				burst[x]=burst[x]-1;
+				comp[x]=total;
+				printf("\n%d\n",total);
+				 if(burst[x]==0)
+					 	count++;
+				x=0;
+			}
+			else	
+				x++;
+		}
+		else
+			break;
+	}
+	printf("\n");
+	printf("\nCompletion times for:");print(p,n);
+	printf("\nis :");
+	print(comp,n);
+}
+
+
+int main()
+{
+		int n,i,q,x;
+	printf("Enter the number of processes:\n");
+	scanf("%d",&n);
+	int p[n],arr[n],burst[n],temp[n];
+	
+	printf("Enter the process IDs of each respectively\n");
+	for(i=0;i<n;i++)
+		scanf("%d",&p[i]);
+		
+	printf("Enter the arrival times of each respectively\n");
+	for(i=0;i<n;i++)
+		scanf("%d",&arr[i]);
+		
+	printf("Enter the burst times of each respectively\n");
+	for(i=0;i<n;i++)
+		scanf("%d",&burst[i]);
+		
+	
+	insertsort(arr,n,p,burst);
+	for (x=0;x<n;x++)
+		temp[x]=burst[x];
+
+	printf("Process ID:     ");print(p,n);
+	printf("Arrival time:   ");print(arr,n);
+	printf("Burst time:     ");print(burst,n);
+	printf("completion sequence is:");	    
+	completion(arr,burst,n,p,temp);
+
+
+}
